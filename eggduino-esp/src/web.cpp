@@ -222,8 +222,17 @@ void Web::handleWifiConnect(AsyncWebServerRequest *req)
 
 void Web::handleWifiStatus(AsyncWebServerRequest *req)
 {
+    
     char json[500];
     snprintf(json, sizeof(json), "{"
+                                 "\"status\":\"%s\","
+                                 "\"ssid\":\"%s\","
+                                 "\"bssid\":\"\""
+                                 "}",
+             statusToString(WiFi.status()).c_str(),
+             WiFi.SSID().c_str()
+             );
+    /*snprintf(json, sizeof(json), "{"
                                  "\"status\":\"%s\","
                                  "\"ssid\":\"%s\","
                                  "\"bssid\":\"%s\""
@@ -231,6 +240,7 @@ void Web::handleWifiStatus(AsyncWebServerRequest *req)
              statusToString(WiFi.status()).c_str(),
              WiFi.SSID().c_str(),
              WiFi.BSSIDstr().c_str());
+             */
     req->send(200, "application/json", json);
 }
 

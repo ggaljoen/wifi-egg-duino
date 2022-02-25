@@ -14,6 +14,9 @@ Printer::Printer()
 {
     mRotation.setEnablePin(PIN_ROT_RES);
     mPen.setEnablePin(PIN_PEN_RES);
+    mRotation.setPinsInverted(parameters.reverseRotation, false, true);
+    mPen.setPinsInverted(parameters.reversePen, false, true);
+
     mRotation.setAcceleration(.1);
     mPen.setAcceleration(.1);
 
@@ -30,8 +33,9 @@ void Printer::begin()
     preferences.begin("motion");
     getParameters(parameters);
     applyParameters();
-
+    penCurrValue = penUpValue;
     penUp();
+    disableMotors();
 }
 
 void Printer::stop()
@@ -185,7 +189,13 @@ void Printer::continuePrint()
 void Printer::penUp()
 {
     _isPenUp = true;
-    ledcWrite(SERVO_CHA, penUpValue);
+    for (uint16_t i = penCurrValue; i >= penUpValue; i--)
+    {
+        ledcWrite(SERVO_CHA, i);
+        delayMicroseconds(250);
+    }
+    penCurrValue = penUpValue;
+    //ledcWrite(SERVO_CHA, penUpValue);
     delay(parameters.penMoveDelay);
     mRotation.setMaxSpeed(parameters.travelSpeed);
     mPen.setMaxSpeed(parameters.travelSpeed);
@@ -194,7 +204,13 @@ void Printer::penUp()
 void Printer::penDown()
 {
     _isPenUp = false;
-    ledcWrite(SERVO_CHA, penDownValue);
+    for (uint16_t i = penCurrValue; i <= penDownValue; i++)
+    {
+        ledcWrite(SERVO_CHA, i);
+        delayMicroseconds(250);
+    }
+    penCurrValue = penDownValue;
+    //ledcWrite(SERVO_CHA, penDownValue);
     delay(parameters.penMoveDelay);
     mRotation.setMaxSpeed(parameters.drawingSpeed);
     mPen.setMaxSpeed(parameters.drawingSpeed);
@@ -203,7 +219,7 @@ void Printer::penDown()
 void Printer::getParameters(MotionParameters &params)
 {
     auto size = sizeof(MotionParameters);
-    if (preferences.getBytes("*", &params, size) != size)
+    if (preferences.getBytes("eggbot", &params, size) != size)
     {
         params.penDownPercent = 70;
         params.penUpPercent = 40;
@@ -219,7 +235,7 @@ void Printer::getParameters(MotionParameters &params)
 void Printer::setParameters(const MotionParameters &params)
 {
     parameters = params;
-    preferences.putBytes("*", &parameters, sizeof(MotionParameters));
+    preferences.putBytes("eggbot", &parameters, sizeof(MotionParameters));
     applyParameters();
 }
 
@@ -241,8 +257,8 @@ void Printer::applyParameters()
         mPen.setMaxSpeed(parameters.drawingSpeed);
     }
 
-    mRotation.setPinsInverted(parameters.reverseRotation);
-    mPen.setPinsInverted(parameters.reversePen);
+    mRotation.setPinsInverted(parameters.reverseRotation,false,true);
+    mPen.setPinsInverted(parameters.reversePen, false, true);
 }
 
 void Printer::enableMotors()
@@ -253,6 +269,9 @@ void Printer::enableMotors()
 
 void Printer::disableMotors()
 {
+    mRotation.setPinsInverted(parameters.reverseRotation, false, true);
+    mPen.setPinsInverted(parameters.reversePen, false, true);
+
     mRotation.disableOutputs();
     mPen.disableOutputs();
 }

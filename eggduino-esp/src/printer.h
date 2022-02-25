@@ -8,18 +8,23 @@
 
 typedef std::function<void()> PrinterHandler;
 
-#define PIN_ROT_DIR 2
-#define PIN_ROT_STEP 17
-#define PIN_ROT_RES 16
+#define PIN_ROT_DIR 33
+#define PIN_ROT_STEP 32
+#define PIN_ROT_RES 25
 
-#define PIN_PEN_DIR 5
+#define PIN_PEN_DIR 27
 #define PIN_PEN_STEP 26
-#define PIN_PEN_RES 22
+#define PIN_PEN_RES 25
 
-#define PIN_SERVO 21
+#define PIN_SERVO 14
 #define SERVO_CHA 2
 #define SERVO_MIN (65536 / 20)
 #define SERVO_MAX (2 * SERVO_MIN)
+
+#define VSPI_SS 4
+#define VSPI_SCLK 18
+#define VSPI_MISO 19
+#define VSPI_MOSI 23
 
 struct MotionParameters
 {
@@ -73,7 +78,7 @@ private:
     MultiStepper multiStepper;
 
     int32_t posX, posY;
-    uint16_t penUpValue, penDownValue;
+    uint16_t penUpValue, penDownValue,penCurrValue;
     bool _isPenUp, _isMoving;
     Preferences preferences;
     MotionParameters parameters;
