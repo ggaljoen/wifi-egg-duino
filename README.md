@@ -1,11 +1,15 @@
+I just modded it to
+a) work on a plain ordinary esp32
+b) slow down the pen hammering on the egg otherwise
+
 Wi-Fi egg bot
 =====================
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat-square&logo=paypal)](https://paypal.me/andreitatar)
+[![Donate original author](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat-square&logo=paypal)](https://paypal.me/andreitatar)
 
 Based on the M5stack core platform (ESP32), this project aims to provide a refresh to the original [Egg Bot](https://egg-bot.com/) giving it the ability to load/slice/save/print files without the use of a PC.
 
-If you like the project, find it useful and want to support me, consider donating [PayPal](https://paypal.me/andreitatar).
+If you like the project, find it useful and want to support the original author, consider donating [PayPal](https://paypal.me/andreitatar).
 
 ## Demo
 
