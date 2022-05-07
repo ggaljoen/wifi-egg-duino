@@ -97,10 +97,17 @@ void Web::begin()
 String Web::getStatusJson()
 {
     char buff[200];
+    
+    #ifdef BOARD_M5STACKCORE
+        auto skip = _rootPath.length() + 1;
+    #else
+        auto skip = 0;
+    #endif
+    
     if (_printer.isPrinting())
     {
         String fileName = _printer.printingFileName();
-        fileName = fileName.substring(_rootPath.length() + 1, fileName.length() - extension.length());
+        fileName = fileName.substring(skip, fileName.length() - extension.length());
         if (_printer.isPaused())
         {
             snprintf(buff, sizeof(buff), "{\"status\":\"paused\",\"waitingFor\":\"%s\",\"fileName\":\"%s\",\"progress\":%lu}",
@@ -325,11 +332,11 @@ void Web::handleFilesList(AsyncWebServerRequest *req)
 
     String output = "[";
 
-#ifdef BOARD_M5STACKCORE
-    auto skip = _rootPath.length() + 1;
-#else
-    auto skip = 0;
-#endif
+    #ifdef BOARD_M5STACKCORE
+        auto skip = _rootPath.length() + 1;
+    #else
+        auto skip = 0;
+    #endif
 
     while (File file = dir.openNextFile())
     {
@@ -385,7 +392,12 @@ void Web::handleFileGetDelete(AsyncWebServerRequest *req)
     String path = _rootPath + "/" + req->url().substring(10) + extension;
     if (req->method() == HTTP_GET)
     {
-        req->send(_fs, path);
+        #ifdef BOARD_M5STACKCORE
+            req->send(_fs, path);
+        #else
+            File file = _fs.open(path);
+            req->send(file.read());
+        #endif
     }
     else
     {
