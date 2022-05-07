@@ -54,22 +54,22 @@ void Web::begin()
                          std::placeholders::_3, std::placeholders::_4,
                          std::placeholders::_5, std::placeholders::_6));
 
-    _server.on("/api/reboot", HTTP_POST, [this](AsyncWebServerRequest *req) {
+    _server.on("/api/reboot", HTTP_POST, [this](AsyncWebServerRequest *req)
+               {
         AsyncWebServerResponse *response = req->beginResponse(200, "text/plain", "OK");
         response->addHeader("Connection", "close");
         req->send(response);
 
         delay(1000);
-        ESP.restart();
-    });
+        ESP.restart(); });
 
     _server.serveStatic("/", SPIFFS, "/", "public,max-age=3600,immutable");
     _server.addHandler(&_ws);
-    _server.onNotFound([](AsyncWebServerRequest *req) {
-        req->send(SPIFFS, "/index.html");
-    });
+    _server.onNotFound([](AsyncWebServerRequest *req)
+                       { req->send(SPIFFS, "/index.html"); });
 
-    _ws.onEvent([this](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
+    _ws.onEvent([this](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len)
+                {
         if (type == WS_EVT_CONNECT)
         {
             client->text(getStatusJson());
@@ -80,20 +80,18 @@ void Web::begin()
             {
                 client->text("__pong__");
             }
-        }
-    });
+        } });
 
     _server.begin();
 
-    _printer.onProgressChanged([this]() {
+    _printer.onProgressChanged([this]()
+                               {
         char buff[20];
         snprintf(buff, sizeof(buff), "{\"progress\":%lu}", _printer.getPrintedLines());
-        _ws.textAll(buff);
-    });
+        _ws.textAll(buff); });
 
-    _printer.onStatusChanged([this]() {
-        _ws.textAll(getStatusJson());
-    });
+    _printer.onStatusChanged([this]()
+                             { _ws.textAll(getStatusJson()); });
 }
 
 String Web::getStatusJson()
@@ -206,6 +204,7 @@ void Web::handleWifiConnect(AsyncWebServerRequest *req)
             0,
             bssid);
 
+        delay(5000);
         if (result == WL_CONNECTED)
         {
             req->send(200);
@@ -222,7 +221,6 @@ void Web::handleWifiConnect(AsyncWebServerRequest *req)
 
 void Web::handleWifiStatus(AsyncWebServerRequest *req)
 {
-    
     char json[500];
     snprintf(json, sizeof(json), "{"
                                  "\"status\":\"%s\","
@@ -230,17 +228,8 @@ void Web::handleWifiStatus(AsyncWebServerRequest *req)
                                  "\"bssid\":\"\""
                                  "}",
              statusToString(WiFi.status()).c_str(),
-             WiFi.SSID().c_str()
-             );
-    /*snprintf(json, sizeof(json), "{"
-                                 "\"status\":\"%s\","
-                                 "\"ssid\":\"%s\","
-                                 "\"bssid\":\"%s\""
-                                 "}",
-             statusToString(WiFi.status()).c_str(),
              WiFi.SSID().c_str(),
              WiFi.BSSIDstr().c_str());
-             */
     req->send(200, "application/json", json);
 }
 
@@ -335,7 +324,13 @@ void Web::handleFilesList(AsyncWebServerRequest *req)
     }
 
     String output = "[";
+
+#ifdef BOARD_M5STACKCORE
     auto skip = _rootPath.length() + 1;
+#else
+    auto skip = 0;
+#endif
+
     while (File file = dir.openNextFile())
     {
         auto fileName = String(file.name());

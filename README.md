@@ -1,9 +1,4 @@
-I just modded it to
-a) work on a plain ordinary esp32
-b) slow down the pen hammering on the egg otherwise
-
-Wi-Fi egg bot
-=====================
+# Wi-Fi egg bot
 
 [![Donate original author](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat-square&logo=paypal)](https://paypal.me/andreitatar)
 
@@ -17,16 +12,16 @@ If you like the project, find it useful and want to support the original author,
 
 ## Development work
 
-Remaining things for a first release:
+### Remaining things for a first release
 
 - [x] WiFi setup - start firmware (or switch if unable to connect to a network) in AP mode. Allow changing the mode/wi-fi settings from the web client
 - [ ] M5 UI - update M5 code to include UI to: start/pause/stop print, view progress and Wi-Fi settings (AP settings and/or IP in STA mode)
 - [ ] OTA - easier firmware update (removing dependencies for platformio or other tools after the first flash)
 
-Lower priority:
+### Lower priority
+
 - [ ] Move image processing in web worker
 - [ ] Make project compatible with generic ESP32 boards
-
 
 ## HW Connections to M5stack core
 
@@ -40,14 +35,14 @@ Lower priority:
 | Pen Motor RESET         | 22   |
 | Servo                   | 21   |
 
-<img src="https://raw.githubusercontent.com/andrei-tatar/wifi-egg-duino/master/doc/m5-back.jpg" width=350>
-
+![M5Stack Back](doc/m5-back.jpg)
 
 ## Building
 
 ### Web client (angular based)
 
 Dependencies: [node.js](https://nodejs.org/en/)
+
 ```
 cd eggduino-client
 npm install 
@@ -65,3 +60,19 @@ platformio run                             - build code
 platformio run --target upload             - upload code
 platformio run --target uploadfs           - upload web client files
 ```
+
+## Change Log
+
+20220225: (rysmario)
+
+- Modded to work on a plain ESP32
+- Slow down the servo to avoid pen hammering on the egg
+
+20220506: (revnull-src)
+
+- Added support for Wemos D1 "R32" Uno style clone for use with the popular Arduino CNC shield
+- Fixed file name parsing when reading from SD card
+- Added simple feature options via "#define" in the printer.h
+- Modularized platform.ini build environments to account for the currently tested platforms
+- Added WiFi networking debug statements to console output
+- Setup config defaults on first flash.

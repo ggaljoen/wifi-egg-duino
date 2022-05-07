@@ -5,26 +5,106 @@
 #include <MultiStepper.h>
 #include <Preferences.h>
 #include <FS.h>
+#include <functional>
 
 typedef std::function<void()> PrinterHandler;
 
-#define PIN_ROT_DIR 33
-#define PIN_ROT_STEP 32
-#define PIN_ROT_RES 25
+/**
+ * --------------------------------------------------------------
+ * Board Selection:
+ * Uncomment ONLY ONE of the following boards to set the correct 
+ * pin definitions.
+ * --------------------------------------------------------------
+ */
 
-#define PIN_PEN_DIR 27
-#define PIN_PEN_STEP 26
-#define PIN_PEN_RES 25
+//#define BOARD_M5STACKCORE   // M5Stack Core
+//#define BOARD_ESP32DEV      // Standard ESP32 Development module
+#define BOARD_R32CNCSHIELD    // Wemos D1 R32 Uno Clone with CNC shield
 
-#define PIN_SERVO 14
-#define SERVO_CHA 2
-#define SERVO_MIN (65536 / 20)
-#define SERVO_MAX (2 * SERVO_MIN)
+#ifdef BOARD_M5STACKCORE
+    // Rotational Stepper: ("X")
+    #define PIN_ROT_STEP 17
+    #define PIN_ROT_DIR 2
+    #define PIN_ROT_RES 16
+    // Pen Stepper:        ("Y")
+    #define PIN_PEN_STEP 26
+    #define PIN_PEN_DIR 5
+    #define PIN_PEN_RES 22
+    // Servo:
+    #define PIN_SERVO 21
+    #define SERVO_CHA 2
+    #define SERVO_MIN (65536 / 20)
+    #define SERVO_MAX (2 * SERVO_MIN)
+#endif
 
-#define VSPI_SS 4
-#define VSPI_SCLK 18
-#define VSPI_MISO 19
-#define VSPI_MOSI 23
+#ifdef BOARD_ESP32DEV
+    // Rotational Stepper: ("X")
+    #define PIN_ROT_STEP 32
+    #define PIN_ROT_DIR 33
+    #define PIN_ROT_RES 25
+    // Pen Stepper:        ("Y")
+    #define PIN_PEN_STEP 26
+    #define PIN_PEN_DIR 27
+    #define PIN_PEN_RES 25
+    // Servo:
+    #define PIN_SERVO 14
+    #define SERVO_CHA 2
+    #define SERVO_MIN (65536 / 20)
+    #define SERVO_MAX (2 * SERVO_MIN)
+    // SD Card SPI:
+    #define VSPI_SCLK 18
+    #define VSPI_MISO 19
+    #define VSPI_MOSI 23
+    #define VSPI_SS 4
+#endif
+
+#ifdef BOARD_R32CNCSHIELD
+    // Rotational Stepper: ("X")
+    #define PIN_ROT_STEP 26
+    #define PIN_ROT_DIR 16
+    #define PIN_ROT_RES 12
+    // Pen Stepper:        ("Y")
+    #define PIN_PEN_STEP 25
+    #define PIN_PEN_DIR 27
+    #define PIN_PEN_RES 12
+    // Servo:
+    #define PIN_SERVO 17
+    #define SERVO_CHA 2
+    #define SERVO_MIN (65536 / 20)
+    #define SERVO_MAX (2 * SERVO_MIN)
+    // SD Card SPI:
+    #define VSPI_SCLK 18
+    #define VSPI_MISO 19
+    #define VSPI_MOSI 23
+    #define VSPI_SS 5
+#endif
+
+#ifndef BOARD_M5STACKCORE
+    // Onboard LED:
+    static const uint8_t LED_BUILTIN = 2;
+    #define BUILTIN_LED  LED_BUILTIN // backward compatibility
+#endif
+
+/**
+ * --------------------------------------------------------------
+ * Misc Options
+ * --------------------------------------------------------------
+ */
+
+/** Enable if your controller is having power stability issues.
+ *  More info: https://iotespresso.com/how-to-disable-brownout-detector-in-esp32-in-arduino/
+ */
+//#define DISABLE_BROWNOUT_DETECTOR
+
+/** Enable to reduce pen hammering. May cause jitter on certain servos.
+ */
+//#define SLOWER_SERVO
+
+/** Enable for WiFi connection retries 
+ */
+//#define WIFI_RETRY
+
+// END CONFIG ---------------------------------------------------
 
 struct MotionParameters
 {
@@ -78,7 +158,7 @@ private:
     MultiStepper multiStepper;
 
     int32_t posX, posY;
-    uint16_t penUpValue, penDownValue,penCurrValue;
+    uint16_t penUpValue, penDownValue, penCurrValue;
     bool _isPenUp, _isMoving;
     Preferences preferences;
     MotionParameters parameters;

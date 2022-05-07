@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const src = 'dist/eggduino-client/';
-const dist = '../eggduino-m5/data/';
+const dist = '../eggduino-esp/data/';
 
 fs.rmdirSync(dist, { recursive: true });
 

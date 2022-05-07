@@ -54,8 +54,8 @@ void Printer::stop()
 
     if (xTaskGetCurrentTaskHandle() != handle)
     {
-        //if we stop from outside the print task,
-        //stop first, close file 2nd
+        // if we stop from outside the print task,
+        // stop first, close file 2nd
         vTaskDelete(handle);
         handle = NULL;
     }
@@ -118,8 +118,8 @@ void Printer::printTask()
         }
         else if (buffer[0] == 'Z')
         {
-            //TODO: report progress percent on LCD
-            // progress = atoi(&buffer[2]);
+            // TODO: report progress percent on LCD
+            //  progress = atoi(&buffer[2]);
         }
         else if (buffer[0] == 'S')
         {
@@ -189,13 +189,16 @@ void Printer::continuePrint()
 void Printer::penUp()
 {
     _isPenUp = true;
-    for (uint16_t i = penCurrValue; i >= penUpValue; i--)
-    {
-        ledcWrite(SERVO_CHA, i);
-        delayMicroseconds(250);
-    }
-    penCurrValue = penUpValue;
-    //ledcWrite(SERVO_CHA, penUpValue);
+    #ifdef SLOWER_SERVO
+        for (uint16_t i = penCurrValue; i >= penUpValue; i--)
+        {
+            ledcWrite(SERVO_CHA, i);
+            delayMicroseconds(250);
+        }
+        penCurrValue = penUpValue;
+    #else
+        ledcWrite(SERVO_CHA, penUpValue);
+    #endif
     delay(parameters.penMoveDelay);
     mRotation.setMaxSpeed(parameters.travelSpeed);
     mPen.setMaxSpeed(parameters.travelSpeed);
@@ -204,13 +207,16 @@ void Printer::penUp()
 void Printer::penDown()
 {
     _isPenUp = false;
-    for (uint16_t i = penCurrValue; i <= penDownValue; i++)
-    {
-        ledcWrite(SERVO_CHA, i);
-        delayMicroseconds(250);
-    }
-    penCurrValue = penDownValue;
-    //ledcWrite(SERVO_CHA, penDownValue);
+    #ifdef SLOWER_SERVO
+        for (uint16_t i = penCurrValue; i <= penDownValue; i++)
+        {
+            ledcWrite(SERVO_CHA, i);
+            delayMicroseconds(250);
+        }
+        penCurrValue = penDownValue;
+    #else
+        ledcWrite(SERVO_CHA, penDownValue);
+    #endif
     delay(parameters.penMoveDelay);
     mRotation.setMaxSpeed(parameters.drawingSpeed);
     mPen.setMaxSpeed(parameters.drawingSpeed);
@@ -229,6 +235,7 @@ void Printer::getParameters(MotionParameters &params)
         params.stepsPerRotation = 6400;
         params.reversePen = false;
         params.reverseRotation = false;
+        setParameters(params);
     }
 }
 
@@ -257,7 +264,7 @@ void Printer::applyParameters()
         mPen.setMaxSpeed(parameters.drawingSpeed);
     }
 
-    mRotation.setPinsInverted(parameters.reverseRotation,false,true);
+    mRotation.setPinsInverted(parameters.reverseRotation, false, true);
     mPen.setPinsInverted(parameters.reversePen, false, true);
 }
 
