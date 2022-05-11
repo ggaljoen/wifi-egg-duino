@@ -3,6 +3,7 @@
 #include "esp_wifi.h"
 #include <Update.h>
 
+static const char* TAG = "Web";
 const String extension = ".egg";
 
 Web::Web(FS &fs, Printer &printer, String rootPath, uint16_t port)
@@ -16,6 +17,7 @@ Web::Web(FS &fs, Printer &printer, String rootPath, uint16_t port)
 
 void Web::begin()
 {
+    ESP_LOGD(TAG, "<- was called");
     SPIFFS.begin();
     _fs.mkdir(_rootPath);
 
@@ -96,6 +98,7 @@ void Web::begin()
 
 String Web::getStatusJson()
 {
+    ESP_LOGD(TAG, "<- was called");
     char buff[200];
     
     #ifdef BOARD_M5STACKCORE
@@ -127,11 +130,13 @@ String Web::getStatusJson()
         snprintf(buff, sizeof(buff), "{\"status\":\"stopped\"}");
     }
 
+    ESP_LOGD(TAG, "Response: %s", buff);
     return String(buff);
 }
 
 String Web::statusToString(wl_status_t status)
 {
+    ESP_LOGD(TAG, "<- was called");
     switch (status)
     {
     case WL_IDLE_STATUS:
@@ -155,13 +160,16 @@ String Web::statusToString(wl_status_t status)
 
 void Web::handlePrint(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     if (_printer.isPrinting())
     {
+        ESP_LOGD(TAG, "ERROR: isPrinting()");
         req->send(400);
         return;
     }
 
     String path = _rootPath + "/" + req->url().substring(11) + extension;
+    ESP_LOGD(TAG, "Path: %s", path);
     if (_fs.exists(path))
     {
         File file = _fs.open(path);
@@ -171,13 +179,16 @@ void Web::handlePrint(AsyncWebServerRequest *req)
     }
     else
     {
+        ESP_LOGD(TAG, "ERROR: %s not found", path);
         req->send(404);
     }
 }
 
 void Web::handleWifiScan(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     int count = WiFi.scanNetworks();
+    ESP_LOGD(TAG, "Networks Found: %d", count);
     String json = "[";
     for (auto i = 0; i < count; i++)
     {
@@ -187,11 +198,13 @@ void Web::handleWifiScan(AsyncWebServerRequest *req)
         json += network;
     }
     json += "]";
+    ESP_LOGD(TAG, "Response: %s", json);
     req->send(200, "application/json", json);
 }
 
 void Web::handleWifiConnect(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     if (req->hasParam("ssid", true) && req->hasParam("password", true) && req->hasParam("bssid", true))
     {
         auto bssidStr = req->getParam("bssid", true)->value();
@@ -211,7 +224,7 @@ void Web::handleWifiConnect(AsyncWebServerRequest *req)
             0,
             bssid);
 
-        delay(5000);
+        //delay(5000);
         if (result == WL_CONNECTED)
         {
             req->send(200);
@@ -228,6 +241,7 @@ void Web::handleWifiConnect(AsyncWebServerRequest *req)
 
 void Web::handleWifiStatus(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     char json[500];
     snprintf(json, sizeof(json), "{"
                                  "\"status\":\"%s\","
@@ -237,11 +251,13 @@ void Web::handleWifiStatus(AsyncWebServerRequest *req)
              statusToString(WiFi.status()).c_str(),
              WiFi.SSID().c_str(),
              WiFi.BSSIDstr().c_str());
+    ESP_LOGD(TAG, "Response: %s", json);
     req->send(200, "application/json", json);
 }
 
 void Web::handlePrinterCommand(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     if (req->hasParam("command", true))
     {
         auto cmd = req->getParam("command", true)->value();
@@ -265,6 +281,7 @@ void Web::handlePrinterCommand(AsyncWebServerRequest *req)
 
 void Web::handleUpdateMotionParams(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     MotionParameters params;
     _printer.getParameters(params);
 
@@ -306,6 +323,7 @@ void Web::handleUpdateMotionParams(AsyncWebServerRequest *req)
 
 void Web::handleGetMotionParams(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     MotionParameters params;
     _printer.getParameters(params);
 
@@ -318,11 +336,13 @@ void Web::handleGetMotionParams(AsyncWebServerRequest *req)
              params.reversePen ? "true" : "false",
              params.reverseRotation ? "true" : "false");
 
+    ESP_LOGD(TAG, "Response: %s", response);
     req->send(200, "application/json", response);
 }
 
 void Web::handleFilesList(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     File dir = _fs.open(_rootPath);
     if (!dir || !dir.isDirectory())
     {
@@ -354,11 +374,13 @@ void Web::handleFilesList(AsyncWebServerRequest *req)
         output += "\"}";
     }
     output += "]";
+    ESP_LOGD(TAG, "Response: %s", output);   
     req->send(200, "application/json", output);
 }
 
 void Web::handleFilesUploadResponse(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     if (req->_tempFile)
     {
         req->_tempFile.close();
@@ -372,9 +394,11 @@ void Web::handleFilesUploadResponse(AsyncWebServerRequest *req)
 
 void Web::handleFileUploadBody(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final)
 {
+    ESP_LOGD(TAG, "<- was called");
     if (!index)
     {
         String path = _rootPath + "/" + filename + extension;
+        ESP_LOGD(TAG, "Path: %s", path);
         if (!_fs.exists(path))
         {
             auto file = _fs.open(path, "w");
@@ -389,15 +413,12 @@ void Web::handleFileUploadBody(AsyncWebServerRequest *request, String filename, 
 
 void Web::handleFileGetDelete(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     String path = _rootPath + "/" + req->url().substring(10) + extension;
+    ESP_LOGD(TAG, "Path: %s", path);
     if (req->method() == HTTP_GET)
     {
-        #ifdef BOARD_M5STACKCORE
-            req->send(_fs, path);
-        #else
-            File file = _fs.open(path);
-            req->send(file.read());
-        #endif
+        req->send(_fs, path);
     }
     else
     {
@@ -412,11 +433,13 @@ void Web::handleFileGetDelete(AsyncWebServerRequest *req)
 
 void Web::handleConfigGet(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     req->send(_fs, _rootPath + "/config.json");
 }
 
 void Web::handleConfigUpdate(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
 {
+    ESP_LOGD(TAG, "<- was called");
     auto file = _fs.open(_rootPath + "/config.json", "w");
     file.write(data, len);
     file.close();
@@ -425,6 +448,7 @@ void Web::handleConfigUpdate(AsyncWebServerRequest *request, uint8_t *data, size
 
 void Web::handleUpdateResponse(AsyncWebServerRequest *req)
 {
+    ESP_LOGD(TAG, "<- was called");
     char json[150];
     snprintf(json, sizeof(json), "{\"status\":\"%s\"}", Update.errorString());
     req->send(Update.hasError() ? 500 : 200, "application/json", json);
@@ -438,6 +462,7 @@ void Web::handleUpdateResponse(AsyncWebServerRequest *req)
 
 void Web::handleUpdateBody(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final)
 {
+    ESP_LOGD(TAG, "<- was called");
     if (!index)
     {
         if (filename.indexOf("spiffs") >= 0)

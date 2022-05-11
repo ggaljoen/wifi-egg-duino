@@ -1,10 +1,12 @@
 #include "esp32-hal-ledc.h"
 #include "printer.h"
 
+static const char* TAG = "Printer";
 #define TASK_PRIORITY 2
 
 void printTaskHandler(void *arg)
 {
+    ESP_LOGD(TAG, "<- was called");
     ((Printer *)arg)->printTask();
 }
 
@@ -26,6 +28,7 @@ Printer::Printer()
 
 void Printer::begin()
 {
+    ESP_LOGD(TAG, "<- was called");
     disableMotors();
     ledcSetup(SERVO_CHA, 50, 16);
     ledcAttachPin(PIN_SERVO, SERVO_CHA);
@@ -40,6 +43,7 @@ void Printer::begin()
 
 void Printer::stop()
 {
+    ESP_LOGD(TAG, "<- was called");
     TaskHandle_t handle = printTaskHandle;
     if (!handle)
     {
@@ -78,6 +82,7 @@ void Printer::stop()
 
 void Printer::print(fs::File file)
 {
+    ESP_LOGD(TAG, "<- was called");
     stop();
 
     printing = new File(file);
@@ -88,6 +93,7 @@ void Printer::print(fs::File file)
 
 void Printer::printTask()
 {
+    ESP_LOGD(TAG, "<- was called");
     uint32_t lastProgress = 0;
     while (printing->available())
     {
@@ -159,6 +165,7 @@ void Printer::printTask()
 
 void Printer::moveTo(long x, long y)
 {
+    ESP_LOGD(TAG, "<- was called");
     disableCore0WDT();
     long pos[2] = {x, y};
     multiStepper.moveTo(pos);
@@ -168,6 +175,7 @@ void Printer::moveTo(long x, long y)
 
 void Printer::pause()
 {
+    ESP_LOGD(TAG, "<- was called");
     if (printTaskHandle && !waiting)
     {
         waiting = true;
@@ -178,6 +186,7 @@ void Printer::pause()
 
 void Printer::continuePrint()
 {
+    ESP_LOGD(TAG, "<- was called");
     if (printTaskHandle && waiting)
     {
         vTaskResume(printTaskHandle);
@@ -188,6 +197,7 @@ void Printer::continuePrint()
 
 void Printer::penUp()
 {
+    ESP_LOGD(TAG, "<- was called");
     _isPenUp = true;
     #ifdef SLOWER_SERVO
         for (uint16_t i = penCurrValue; i >= penUpValue; i--)
@@ -206,6 +216,7 @@ void Printer::penUp()
 
 void Printer::penDown()
 {
+    ESP_LOGD(TAG, "<- was called");
     _isPenUp = false;
     #ifdef SLOWER_SERVO
         for (uint16_t i = penCurrValue; i <= penDownValue; i++)
@@ -224,9 +235,11 @@ void Printer::penDown()
 
 void Printer::getParameters(MotionParameters &params)
 {
+    ESP_LOGD(TAG, "<- was called");
     auto size = sizeof(MotionParameters);
     if (preferences.getBytes("eggbot", &params, size) != size)
     {
+        Serial.println("^^^ Setting first run config defaults ^^^");
         params.penDownPercent = 70;
         params.penUpPercent = 40;
         params.drawingSpeed = 500;
@@ -241,6 +254,7 @@ void Printer::getParameters(MotionParameters &params)
 
 void Printer::setParameters(const MotionParameters &params)
 {
+    ESP_LOGD(TAG, "<- was called");
     parameters = params;
     preferences.putBytes("eggbot", &parameters, sizeof(MotionParameters));
     applyParameters();
@@ -248,6 +262,7 @@ void Printer::setParameters(const MotionParameters &params)
 
 void Printer::applyParameters()
 {
+    ESP_LOGD(TAG, "<- was called");
     penUpValue = SERVO_MIN + (SERVO_MAX - SERVO_MIN) * parameters.penUpPercent / 100;
     penDownValue = SERVO_MIN + (SERVO_MAX - SERVO_MIN) * parameters.penDownPercent / 100;
 
@@ -270,12 +285,14 @@ void Printer::applyParameters()
 
 void Printer::enableMotors()
 {
+    ESP_LOGD(TAG, "<- was called");
     mRotation.enableOutputs();
     mPen.enableOutputs();
 }
 
 void Printer::disableMotors()
 {
+    ESP_LOGD(TAG, "<- was called");
     mRotation.setPinsInverted(parameters.reverseRotation, false, true);
     mPen.setPinsInverted(parameters.reversePen, false, true);
 

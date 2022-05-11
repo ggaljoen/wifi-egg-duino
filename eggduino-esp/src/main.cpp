@@ -105,14 +105,14 @@ void setup()
 
         if (!SD.begin(VSPI_SS, *sd_spi, 4000000))
         {
-            Serial.println("Card Mount Failed");
+            Serial.println("SD Card Mount Failed");
         }
 
         uint8_t cardType = SD.cardType();
 
         if (cardType == CARD_NONE)
         {
-            Serial.println("No SD card attached");
+            Serial.println("No SD Card Attached");
         }
     #endif
 

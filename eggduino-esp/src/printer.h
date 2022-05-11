@@ -96,12 +96,10 @@ typedef std::function<void()> PrinterHandler;
  */
 //#define DISABLE_BROWNOUT_DETECTOR
 
-/** Enable to reduce pen hammering. May cause jitter on certain servos.
- */
-//#define SLOWER_SERVO
+/** Enable to reduce pen hammering. May cause jitter on certain servos. */
+#define SLOWER_SERVO
 
-/** Enable for WiFi connection retries 
- */
+/** Enable for WiFi connection retries */
 //#define WIFI_RETRY
 
 // END CONFIG ---------------------------------------------------
