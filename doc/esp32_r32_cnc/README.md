@@ -6,11 +6,11 @@ The Wemos D1 R32 is an ESP32 board in and Arduino Uno form factor. This enables 
 
 ### Servo and Motor Connections
 
-The servo connection will use pins from the left side of the CNC shield. Its easiest to just remove the signal line (yellow) from the 3 pin dupont connector of the servo leaving the other 2 in place. Proceed to attach the servo as shown below.
+The servo connection will use pins from the left side of the CNC shield. Its easiest to just remove the signal line <span style="color: yellow">(yellow)</span> from the 3 pin dupont connector of the servo leaving the other 2 in place. Proceed to attach the servo as shown below.
 
 The stepper motors should be attached to the "X" and "Y" sockets. Please configure the stepper driver jumpers per your driver manufacturer's instructions.
 
-**NOTE:** In order for the CNC shield to work with and ESP32 compatible board, you **MUST REMOVE** the resistor shown in the image below. Failure to do will prevent your controller from booting and may even cause damage. You can either de-solder it or just cut it out from the top.
+**NOTE:** In order for the CNC shield to work with an ESP32 compatible board, you **MUST REMOVE** the resistor shown in the image below. Failure to do will prevent your controller from booting and may even cause damage. You can either de-solder it or just cut it out from the top.
 
 | CNC Shield Pins | Servo  |
 |-----------------|--------|
@@ -33,4 +33,4 @@ The stepper motors should be attached to the "X" and "Y" sockets. Please configu
 | 5V or 3.3V      | VCC             |
 | GND             | GND             |
 
-![SD Card Wiring](img/shild_to_sd.png)
+![SD Card Wiring](img/shield_to_sd.png)

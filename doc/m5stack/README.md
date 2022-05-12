@@ -1,8 +1,8 @@
 # M5Stack Core
 
-More information about the M5Stack: https://m5stack.com/
+More information: [m5stack.com](https://m5stack.com/)
 
-## HW Connections to M5stack core
+## Hardware Connections to M5stack Core
 
 | Function                | Pin  |
 |-------------------------|------|

@@ -21,11 +21,12 @@ If you like the project, find it useful and want to support the original author,
 ### Lower priority
 
 - [ ] Move image processing in web worker
-- [ ] Make project compatible with generic ESP32 boards
+- [ ] Make project compatible with generic ESP32 boards [WIP]
 
 ## Hardware Connections
 
 - [M5Stack Core](doc/m5stack/README.md)
+- [ESP32 Dev Board [WIP]](.)
 - [Wemos D1 R32 + CNC Shield](doc/esp32_r32_cnc/README.md)
 
 ## Building
@@ -51,6 +52,8 @@ platformio run                             - build code
 platformio run --target upload             - upload code
 platformio run --target uploadfs           - upload web client files
 ```
+
+[PlatformIO GUI setup and build instructions](doc/platformio/README.md)
 
 ## Contributors
 
