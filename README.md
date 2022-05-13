@@ -16,17 +16,17 @@ If you like the project, find it useful and want to support the original author,
 
 - [x] WiFi setup - start firmware (or switch if unable to connect to a network) in AP mode. Allow changing the mode/wi-fi settings from the web client
 - [ ] M5 UI - update M5 code to include UI to: start/pause/stop print, view progress and Wi-Fi settings (AP settings and/or IP in STA mode)
-- [ ] OTA - easier firmware update (removing dependencies for platformio or other tools after the first flash)
+- [ ] OTA - easier firmware update (removing dependencies for PlatformIO or other tools after the first flash)
 
 ### Lower priority
 
 - [ ] Move image processing in web worker
-- [ ] Make project compatible with generic ESP32 boards [WIP]
+- [ ] Make project compatible with generic ESP32 boards `[WIP]`
 
 ## Hardware Connections
 
 - [M5Stack Core](doc/m5stack/README.md)
-- [ESP32 Dev Board [WIP]](.)
+- ESP32 Dev Board `[WIP]`
 - [Wemos D1 R32 + CNC Shield](doc/esp32_r32_cnc/README.md)
 
 ## Building
@@ -37,7 +37,7 @@ Dependencies: [node.js](https://nodejs.org/en/)
 
 ```text
 cd eggduino-client
-npm install 
+npm install
 npm run build
 ```
 

@@ -22,11 +22,11 @@ typedef std::function<void()> PrinterHandler;
 #define BOARD_R32CNCSHIELD    // Wemos D1 R32 Uno Clone with CNC shield
 
 #ifdef BOARD_M5STACKCORE
-    // Rotational Stepper: ("X")
+    // Egg Rotation Stepper: ("X")
     #define PIN_ROT_STEP 17
     #define PIN_ROT_DIR 2
     #define PIN_ROT_RES 16
-    // Pen Stepper:        ("Y")
+    // Pen Stepper:          ("Y")
     #define PIN_PEN_STEP 26
     #define PIN_PEN_DIR 5
     #define PIN_PEN_RES 22
@@ -38,11 +38,11 @@ typedef std::function<void()> PrinterHandler;
 #endif
 
 #ifdef BOARD_ESP32DEV
-    // Rotational Stepper: ("X")
+    // Egg Rotation Stepper: ("X")
     #define PIN_ROT_STEP 32
     #define PIN_ROT_DIR 33
     #define PIN_ROT_RES 25
-    // Pen Stepper:        ("Y")
+    // Pen Stepper:          ("Y")
     #define PIN_PEN_STEP 26
     #define PIN_PEN_DIR 27
     #define PIN_PEN_RES 25
@@ -59,11 +59,11 @@ typedef std::function<void()> PrinterHandler;
 #endif
 
 #ifdef BOARD_R32CNCSHIELD
-    // Rotational Stepper: ("X")
+    // Egg Rotation Stepper: ("X")
     #define PIN_ROT_STEP 26
     #define PIN_ROT_DIR 16
     #define PIN_ROT_RES 12
-    // Pen Stepper:        ("Y")
+    // Pen Stepper:          ("Y")
     #define PIN_PEN_STEP 25
     #define PIN_PEN_DIR 27
     #define PIN_PEN_RES 12
