@@ -1,9 +1,9 @@
-#include <SPIFFS.h>
-#include "web.h"
 #include "esp_wifi.h"
+#include "web.h"
+#include <SPIFFS.h>
 #include <Update.h>
 
-static const char* TAG = "Web";
+static const char* TAG = "WebServer";
 const String extension = ".egg";
 
 Web::Web(FS &fs, Printer &printer, String rootPath, uint16_t port)
@@ -100,13 +100,13 @@ String Web::getStatusJson()
 {
     ESP_LOGD(TAG, "<- was called");
     char buff[200];
-    
+
     #ifdef BOARD_M5STACKCORE
         auto skip = _rootPath.length() + 1;
     #else
         auto skip = 0;
     #endif
-    
+
     if (_printer.isPrinting())
     {
         String fileName = _printer.printingFileName();
@@ -374,7 +374,7 @@ void Web::handleFilesList(AsyncWebServerRequest *req)
         output += "\"}";
     }
     output += "]";
-    ESP_LOGD(TAG, "Response: %s", output);   
+    ESP_LOGD(TAG, "Response: %s", output);
     req->send(200, "application/json", output);
 }
 

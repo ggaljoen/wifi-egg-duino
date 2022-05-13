@@ -1,24 +1,24 @@
 #include <Arduino.h>
-#include <WiFi.h>
 #include <DNSServer.h>
+#include <WiFi.h>
 
-#include "web.h"
 #include "printer.h"
+#include "web.h"
 
 #ifdef BOARD_M5STACKCORE
-    #include <M5Stack.h>
     #include "Free_Fonts.h"
+    #include <M5Stack.h>
 #else
-    #include <Wire.h>
-    #include <SPI.h>
     #include "FS.h"
     #include "SD.h"
+    #include <SPI.h>
+    #include <Wire.h>
 
     SPIClass *sd_spi = NULL;
-    
+
     #ifdef DISABLE_BROWNOUT_DETECTOR
-        #include "soc/soc.h"
         #include "soc/rtc_cntl_reg.h"
+        #include "soc/soc.h"
     #endif
 #endif
 
@@ -102,14 +102,11 @@ void setup()
         sd_spi = new SPIClass(VSPI);
         sd_spi->begin(VSPI_SCLK, VSPI_MISO, VSPI_MOSI, VSPI_SS);
         pinMode(VSPI_SS, OUTPUT);
-
         if (!SD.begin(VSPI_SS, *sd_spi, 4000000))
         {
             Serial.println("SD Card Mount Failed");
         }
-
         uint8_t cardType = SD.cardType();
-
         if (cardType == CARD_NONE)
         {
             Serial.println("No SD Card Attached");
@@ -125,26 +122,25 @@ void loop()
     dnsServer.processNextRequest();
 
     #ifdef WIFI_RETRY
-      uint32_t nextCheck = 10000;
-      if (millis() > nextCheck)
-      {
-        nextCheck = millis() + 10000;
-
-        auto status = WiFi.status();
-        if (status == WL_CONNECTED)
+        uint32_t nextCheck = 10000;
+        if (millis() > nextCheck)
         {
-          WiFi.enableAP(false);
+            nextCheck = millis() + 10000;
+            auto status = WiFi.status();
+            if (status == WL_CONNECTED)
+            {
+                WiFi.enableAP(false);
+            }
+            else if (status == WL_NO_SSID_AVAIL)
+            {
+                startAp();
+                WiFi.enableSTA(false);
+            }
+            else if (status == WL_DISCONNECTED)
+            {
+                startAp();
+            }
         }
-        else if (status == WL_NO_SSID_AVAIL)
-        {
-          startAp();
-          WiFi.enableSTA(false);
-        }
-        else if (status == WL_DISCONNECTED)
-        {
-          startAp();
-        }
-      }
     #endif
 
     #ifdef BOARD_M5STACKCORE

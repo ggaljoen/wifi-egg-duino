@@ -2,17 +2,17 @@
 #define PRINTER_H
 
 #include <AccelStepper.h>
-#include <MultiStepper.h>
-#include <Preferences.h>
 #include <FS.h>
 #include <functional>
+#include <MultiStepper.h>
+#include <Preferences.h>
 
 typedef std::function<void()> PrinterHandler;
 
 /**
  * --------------------------------------------------------------
  * Board Selection:
- * Uncomment ONLY ONE of the following boards to set the correct 
+ * Uncomment ONLY ONE of the following boards to set the correct
  * pin definitions.
  * --------------------------------------------------------------
  */
@@ -77,12 +77,6 @@ typedef std::function<void()> PrinterHandler;
     #define VSPI_MISO 19
     #define VSPI_MOSI 23
     #define VSPI_SS 5
-#endif
-
-#ifndef BOARD_M5STACKCORE
-    // Onboard LED:
-    static const uint8_t LED_BUILTIN = 2;
-    #define BUILTIN_LED  LED_BUILTIN // backward compatibility
 #endif
 
 /**
