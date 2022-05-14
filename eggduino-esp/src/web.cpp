@@ -169,9 +169,10 @@ void Web::handlePrint(AsyncWebServerRequest *req)
     }
 
     String path = _rootPath + "/" + req->url().substring(11) + extension;
-    ESP_LOGD(TAG, "Path: %s", path);
+    char *c = &*path.begin(); // Convert to char for debug out
     if (_fs.exists(path))
     {
+        ESP_LOGD(TAG, "Printing: %s", c);
         File file = _fs.open(path);
         _printer.print(file);
         req->send(200);
@@ -179,7 +180,7 @@ void Web::handlePrint(AsyncWebServerRequest *req)
     }
     else
     {
-        ESP_LOGD(TAG, "ERROR: %s not found", path);
+        ESP_LOGD(TAG, "ERROR: %s not found", c);
         req->send(404);
     }
 }
@@ -198,7 +199,8 @@ void Web::handleWifiScan(AsyncWebServerRequest *req)
         json += network;
     }
     json += "]";
-    ESP_LOGD(TAG, "Response: %s", json);
+    char *c = &*json.begin(); // Convert to char for debug out
+    ESP_LOGD(TAG, "Response: %s", c);
     req->send(200, "application/json", json);
 }
 
@@ -224,7 +226,7 @@ void Web::handleWifiConnect(AsyncWebServerRequest *req)
             0,
             bssid);
 
-        //delay(5000);
+        delay(5000);
         if (result == WL_CONNECTED)
         {
             req->send(200);
@@ -233,6 +235,7 @@ void Web::handleWifiConnect(AsyncWebServerRequest *req)
         {
             char json[150];
             snprintf(json, sizeof(json), "{\"error\": \"%s\"}", statusToString(result).c_str());
+            ESP_LOGD(TAG, "Response: %s", json);
             req->send(400, "application/json", json);
         }
     }
@@ -374,7 +377,8 @@ void Web::handleFilesList(AsyncWebServerRequest *req)
         output += "\"}";
     }
     output += "]";
-    ESP_LOGD(TAG, "Response: %s", output);
+    char *c = &*output.begin();  // Convert to char for debug out
+    ESP_LOGD(TAG, "Response: %s", c);
     req->send(200, "application/json", output);
 }
 
@@ -398,7 +402,8 @@ void Web::handleFileUploadBody(AsyncWebServerRequest *request, String filename, 
     if (!index)
     {
         String path = _rootPath + "/" + filename + extension;
-        ESP_LOGD(TAG, "Path: %s", path);
+        char *c = &*path.begin(); // Convert to char for debug out
+        ESP_LOGD(TAG, "Path: %s", c);
         if (!_fs.exists(path))
         {
             auto file = _fs.open(path, "w");
@@ -415,7 +420,8 @@ void Web::handleFileGetDelete(AsyncWebServerRequest *req)
 {
     ESP_LOGD(TAG, "<- was called");
     String path = _rootPath + "/" + req->url().substring(10) + extension;
-    ESP_LOGD(TAG, "Path: %s", path);
+    char *c = &*path.begin(); // Convert to char for debug out
+    ESP_LOGD(TAG, "Path: %s", c);
     if (req->method() == HTTP_GET)
     {
         req->send(_fs, path);

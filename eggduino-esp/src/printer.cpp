@@ -72,7 +72,6 @@ void Printer::stop()
     }
 
     penUp();
-    moveTo(0, 0);
     disableMotors();
 
     if (handle)
@@ -289,6 +288,7 @@ void Printer::enableMotors()
     ESP_LOGD(TAG, "<- was called");
     mRotation.enableOutputs();
     mPen.enableOutputs();
+    delay(2000);
 }
 
 void Printer::disableMotors()

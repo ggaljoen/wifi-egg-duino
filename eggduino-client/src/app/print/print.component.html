@@ -5,7 +5,7 @@
 </mat-card>
 
 <ng-template #notPrinting>
-    <h2>Egg Designs</h2>
+    <h2>DESIGNS</h2>
     <ng-container *ngIf="files$|async as files">
         <ng-container *ngIf="files.length else noFiles">
             <mat-accordion>
@@ -14,8 +14,8 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <div class="icon-text">
-                                <mat-icon>insert_photo</mat-icon>
-                                <span> {{file.name}}</span>
+                                <mat-icon>blur_circular</mat-icon>
+                                <span style="margin: 0 0 0 10px"> {{file.name}}</span>
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>

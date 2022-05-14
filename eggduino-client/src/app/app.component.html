@@ -1,10 +1,29 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="app-toolbar">
     <mat-toolbar-row>
-        <mat-icon>menu</mat-icon>
-        <a mat-button href="https://github.com/andrei-tatar/wifi-egg-duino" target="_blank"><h1>EggBot</h1></a>
+        <mat-icon>tonality</mat-icon>
+        <span style="margin: 0 0 0 5px"><h1>EGGBOT</h1></span>
         <span class="flex-spacer"></span>
-        <button mat-icon-button [routerLink]="'print'" aria-label="Print"><mat-icon>list_alt</mat-icon></button>
-        <button mat-icon-button [routerLink]="'setup'" aria-label="Config"><mat-icon>settings</mat-icon></button>
+        <button mat-button [matMenuTriggerFor]="menu" aria-label="Menu">
+            <mat-icon>dehaze</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="'print'" aria-label="Print">
+                <mat-icon>list_alt</mat-icon>
+                <span>Design List</span>
+            </button>
+            <button mat-menu-item [routerLink]="'setup'" aria-label="Config">
+                <mat-icon>settings</mat-icon>
+                <span>Edit Settings</span>
+            </button>
+            <a button mat-menu-item href="https://github.com/andrei-tatar/wifi-egg-duino" target="_blank">
+                <mat-icon>supervised_user_circle</mat-icon>
+                <span>About</span>
+            </a>
+            <a button mat-menu-item href="https://paypal.me/andreitatar" target="_blank">
+                <mat-icon>sentiment_satisfied_alt</mat-icon>
+                <span>Donate</span>
+            </a>
+        </mat-menu>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="container">

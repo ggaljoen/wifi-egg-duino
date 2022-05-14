@@ -1,11 +1,11 @@
-<h2>Settings</h2>
+<h2>SETTINGS</h2>
 <mat-accordion>
     <mat-expansion-panel (expandedChange)="$event&&refreshNetworks$.next()">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <div class="icon-text">
                     <mat-icon>wifi</mat-icon>
-                    <span>Wi-Fi Config</span>
+                    <span style="margin: 0 0 0 10px">Wi-Fi Config</span>
                 </div>
             </mat-panel-title>
         </mat-expansion-panel-header>
@@ -29,7 +29,7 @@
             <mat-panel-title>
                 <div class="icon-text">
                     <mat-icon>settings_applications</mat-icon>
-                    <span>Motion Config</span>
+                    <span style="margin: 0 0 0 10px">Motion Config</span>
                 </div>
             </mat-panel-title>
         </mat-expansion-panel-header>
@@ -72,17 +72,17 @@
                 </mat-form-field>
 
                 <mat-checkbox [checked]="params.reversePen" (change)="params.reversePen=$event.checked">
-                    Reverse pen motor
+                    Reverse Pen Motor
                 </mat-checkbox>
                 <mat-checkbox [checked]="params.reverseRotation" (change)="params.reverseRotation=$event.checked">
-                    Reverse rotation motor
+                    Reverse Rotation Motor
                 </mat-checkbox>
 
                 <button mat-raised-button (click)="sendCommand('pen-up')"><mat-icon>arrow_upward</mat-icon> Pen UP</button>
                 <button mat-raised-button (click)="sendCommand('pen-down')"><mat-icon>arrow_downward</mat-icon>Pen DOWN</button>
 
-                <button mat-raised-button (click)="sendCommand('motors-enable')"><mat-icon>power</mat-icon> Motors ENABLE</button>
-                <button mat-raised-button (click)="sendCommand('motors-disable')"><mat-icon>power_off</mat-icon> Motors DISABLE</button>
+                <button mat-raised-button (click)="sendCommand('motors-enable')"><mat-icon>power</mat-icon> ENABLE Motors</button>
+                <button mat-raised-button (click)="sendCommand('motors-disable')"><mat-icon>power_off</mat-icon> DISABLE Motors</button>
             </div>
             <mat-action-row>
                 <button mat-raised-button color="primary" (click)="updateMotionParams(params)"><mat-icon>save</mat-icon> Save</button>
