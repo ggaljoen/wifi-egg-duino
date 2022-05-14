@@ -71,8 +71,9 @@ void Printer::stop()
         printing = NULL;
     }
 
-    disableMotors();
     penUp();
+    moveTo(0, 0);
+    disableMotors();
 
     if (handle)
     {
@@ -165,7 +166,7 @@ void Printer::printTask()
 
 void Printer::moveTo(long x, long y)
 {
-    ESP_LOGD(TAG, "<- was called");
+    ESP_LOGD(TAG, "Move to X:%d Y:%d", x, y);
     disableCore0WDT();
     long pos[2] = {x, y};
     multiStepper.moveTo(pos);
@@ -239,7 +240,7 @@ void Printer::getParameters(MotionParameters &params)
     auto size = sizeof(MotionParameters);
     if (preferences.getBytes("eggbot", &params, size) != size)
     {
-        Serial.println("^^^ Setting first run config defaults ^^^");
+        ESP_LOGD(TAG, "Setting first run config defaults");
         params.penDownPercent = 70;
         params.penUpPercent = 40;
         params.drawingSpeed = 500;

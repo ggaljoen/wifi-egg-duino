@@ -1,8 +1,10 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <a mat-button [routerLink]="'print'" routerLinkActive="mat-accent">Print</a>
-        <a mat-button [routerLink]="'setup'" routerLinkActive="mat-accent">Setup</a>
-        <a mat-button href="https://github.com/andrei-tatar/wifi-egg-duino" target="_blank">About</a>
+        <mat-icon>menu</mat-icon>
+        <a mat-button href="https://github.com/andrei-tatar/wifi-egg-duino" target="_blank"><h1>EggBot</h1></a>
+        <span class="flex-spacer"></span>
+        <button mat-icon-button [routerLink]="'print'" aria-label="Print"><mat-icon>list_alt</mat-icon></button>
+        <button mat-icon-button [routerLink]="'setup'" aria-label="Config"><mat-icon>settings</mat-icon></button>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="container">

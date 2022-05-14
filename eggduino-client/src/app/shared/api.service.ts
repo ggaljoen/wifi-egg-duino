@@ -202,7 +202,7 @@ export enum EncryptionType {
     WpaPsk = 2,
     Wpa2Psk = 3,
     WpaWpa2Psk = 4,
-    Wpa2Enterpries = 5,
+    Wpa2Enterprise = 5,
 }
 
 export interface PrintFile {

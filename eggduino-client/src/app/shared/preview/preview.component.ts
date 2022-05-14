@@ -111,7 +111,7 @@ export class PreviewComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.three.controls.dispose();
       this.three.renderer.dispose();
-      this.three.scene.dispose();
+      this.three.scene.remove();
       this.three.gui.destroy();
     }, 300);
   }

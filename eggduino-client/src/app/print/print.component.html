@@ -5,7 +5,7 @@
 </mat-card>
 
 <ng-template #notPrinting>
-    <button mat-raised-button color="primary" class="upload-button" (click)="uploadFile()">Upload</button>
+    <h2>Egg Designs</h2>
     <ng-container *ngIf="files$|async as files">
         <ng-container *ngIf="files.length else noFiles">
             <mat-accordion>
@@ -13,14 +13,17 @@
                     [expanded]="selectedFileName===file.name" (expandedChange)="$event && selectFile(file)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            {{file.name}}
+                            <div class="icon-text">
+                                <mat-icon>insert_photo</mat-icon>
+                                <span> {{file.name}}</span>
+                            </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-preview @collapse *ngIf="panel.expanded" [layers]="file.layers$|async">
                     </app-preview>
                     <mat-action-row>
-                        <button mat-button color="primary" (click)="printFile(file)">Print</button>
-                        <button mat-button color="warn" (click)="deleteFile(file)">Delete</button>
+                        <button mat-raised-button color="primary" (click)="printFile(file)"><mat-icon>print</mat-icon> Print</button>
+                        <button mat-raised-button color="warn" (click)="deleteFile(file)"><mat-icon>delete</mat-icon> Delete</button>
                     </mat-action-row>
                 </mat-expansion-panel>
             </mat-accordion>
@@ -34,4 +37,7 @@
             </mat-card>
         </ng-template>
     </ng-container>
+    <button mat-raised-button color="primary" class="upload-button" (click)="uploadFile()">
+        <mat-icon>cloud_upload</mat-icon> Upload
+    </button>
 </ng-template>

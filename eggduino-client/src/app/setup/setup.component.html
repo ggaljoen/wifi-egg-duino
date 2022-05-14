@@ -1,8 +1,12 @@
+<h2>Settings</h2>
 <mat-accordion>
     <mat-expansion-panel (expandedChange)="$event&&refreshNetworks$.next()">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Wi-Fi
+                <div class="icon-text">
+                    <mat-icon>wifi</mat-icon>
+                    <span>Wi-Fi Config</span>
+                </div>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <ng-container *ngIf="networks$|async as networks">
@@ -23,7 +27,10 @@
     <mat-expansion-panel (expandedChange)="$event&&refreshMotion$.next()">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Motion
+                <div class="icon-text">
+                    <mat-icon>settings_applications</mat-icon>
+                    <span>Motion Config</span>
+                </div>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <ng-container *ngIf="motionParams$|async as params">
@@ -71,14 +78,14 @@
                     Reverse rotation motor
                 </mat-checkbox>
 
-                <button mat-button (click)="sendCommand('pen-up')">Pen UP</button>
-                <button mat-button (click)="sendCommand('pen-down')">Pen DOWN</button>
+                <button mat-raised-button (click)="sendCommand('pen-up')"><mat-icon>arrow_upward</mat-icon> Pen UP</button>
+                <button mat-raised-button (click)="sendCommand('pen-down')"><mat-icon>arrow_downward</mat-icon>Pen DOWN</button>
 
-                <button mat-button (click)="sendCommand('motors-enable')">Motors ENABLE</button>
-                <button mat-button (click)="sendCommand('motors-disable')">Motors DISABLE</button>
+                <button mat-raised-button (click)="sendCommand('motors-enable')"><mat-icon>power</mat-icon> Motors ENABLE</button>
+                <button mat-raised-button (click)="sendCommand('motors-disable')"><mat-icon>power_off</mat-icon> Motors DISABLE</button>
             </div>
             <mat-action-row>
-                <button mat-button color="primary" (click)="updateMotionParams(params)">Save</button>
+                <button mat-raised-button color="primary" (click)="updateMotionParams(params)"><mat-icon>save</mat-icon> Save</button>
             </mat-action-row>
         </ng-container>
     </mat-expansion-panel>
