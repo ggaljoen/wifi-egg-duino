@@ -92,11 +92,11 @@ export class SetupComponent implements OnDestroy {
     }
   }
 
-  toggle(cateogry: SetupComponent['selected']) {
-    if (this.selected === cateogry) {
+  toggle(category: SetupComponent['selected']) {
+    if (this.selected === category) {
       this.selected = null;
     } else {
-      this.selected = cateogry;
+      this.selected = category;
     }
   }
 

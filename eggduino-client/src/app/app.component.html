@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="app-toolbar">
     <mat-toolbar-row>
         <mat-icon>tonality</mat-icon>
-        <span style="margin: 0 0 0 5px"><h1>EGGBOT</h1></span>
+        <a mat-flat-button color="primary" [routerLink]="'print'"><h1>EGGBOT</h1></a>
         <span class="flex-spacer"></span>
         <button mat-button [matMenuTriggerFor]="menu" aria-label="Menu">
             <mat-icon>dehaze</mat-icon>
