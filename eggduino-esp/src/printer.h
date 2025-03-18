@@ -18,8 +18,8 @@ typedef std::function<void()> PrinterHandler;
  */
 
 //#define BOARD_M5STACKCORE   // M5Stack Core
-//#define BOARD_ESP32DEV      // Standard ESP32 Development module
-#define BOARD_R32CNCSHIELD    // Wemos D1 R32 Uno Clone with CNC shield
+#define BOARD_ESP32DEV      // Standard ESP32 Development module
+//#define BOARD_R32CNCSHIELD    // Wemos D1 R32 Uno Clone with CNC shield
 
 #ifdef BOARD_M5STACKCORE
     // Egg Rotation Stepper: ("X")
@@ -39,15 +39,15 @@ typedef std::function<void()> PrinterHandler;
 
 #ifdef BOARD_ESP32DEV
     // Egg Rotation Stepper: ("X")
-    #define PIN_ROT_STEP 32
+    #define PIN_ROT_STEP 25
     #define PIN_ROT_DIR 33
-    #define PIN_ROT_RES 25
+    #define PIN_ROT_RES 13
     // Pen Stepper:          ("Y")
-    #define PIN_PEN_STEP 26
-    #define PIN_PEN_DIR 27
-    #define PIN_PEN_RES 25
+    #define PIN_PEN_STEP 27
+    #define PIN_PEN_DIR 26
+    #define PIN_PEN_RES 13
     // Servo:
-    #define PIN_SERVO 14
+    #define PIN_SERVO 22
     #define SERVO_CHA 2
     #define SERVO_MIN (65536 / 20)
     #define SERVO_MAX (2 * SERVO_MIN)
@@ -55,7 +55,7 @@ typedef std::function<void()> PrinterHandler;
     #define VSPI_SCLK 18
     #define VSPI_MISO 19
     #define VSPI_MOSI 23
-    #define VSPI_SS 4
+    #define VSPI_SS 5
 #endif
 
 #ifdef BOARD_R32CNCSHIELD

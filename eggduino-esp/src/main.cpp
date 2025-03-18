@@ -45,13 +45,13 @@ void OnWiFiEvent(WiFiEvent_t event)
             Serial.print("Eggbot Connected to WiFi Network: ");
             Serial.println(WiFi.SSID());
             #ifndef BOARD_M5STACKCORE
-                digitalWrite(LED_BUILTIN, HIGH);
+ //               digitalWrite(LED_BUILTIN, HIGH);
             #endif
             break;
         case SYSTEM_EVENT_STA_DISCONNECTED:
             Serial.println("Eggbot Disconnected from WiFi Network");
             #ifndef BOARD_M5STACKCORE
-                digitalWrite(LED_BUILTIN, LOW);
+ //               digitalWrite(LED_BUILTIN, LOW);
             #endif
             break;
         case SYSTEM_EVENT_STA_GOT_IP:
@@ -77,8 +77,8 @@ void setup()
     Serial.begin(115200);
     Serial.println();
     #ifndef BOARD_M5STACKCORE
-        pinMode(LED_BUILTIN, OUTPUT);
-        digitalWrite(LED_BUILTIN, LOW);
+//        pinMode(LED_BUILTIN, OUTPUT);
+//        digitalWrite(LED_BUILTIN, LOW);
     #endif
 
     #ifdef DISABLE_BROWNOUT_DETECTOR
