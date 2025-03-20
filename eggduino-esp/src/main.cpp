@@ -26,12 +26,16 @@ Printer printer;
 Web web(SD, printer);
 DNSServer dnsServer;
 
+const char* wifi_network_ssid = "ssid";
+const char* wifi_network_password =  "password";
+
 void startAp()
 {
     Serial.print("Eggbot Setup AP: ");
     char ssid[14];
     snprintf(ssid, sizeof(ssid), "EggBot-%04X", (uint16_t)(ESP.getEfuseMac() >> 32));
     Serial.println(WiFi.softAP(ssid) ? "Ready" : "Failed!");
+    WiFi.begin(wifi_network_ssid, wifi_network_password);
 }
 
 void OnWiFiEvent(WiFiEvent_t event)

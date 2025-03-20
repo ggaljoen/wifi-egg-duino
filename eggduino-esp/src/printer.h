@@ -41,11 +41,11 @@ typedef std::function<void()> PrinterHandler;
     // Egg Rotation Stepper: ("X")
     #define PIN_ROT_STEP 25
     #define PIN_ROT_DIR 33
-    #define PIN_ROT_RES 13
+    #define PIN_ROT_RES 13 // D1 mini = 10 // ESP32 38p = 13
     // Pen Stepper:          ("Y")
     #define PIN_PEN_STEP 27
     #define PIN_PEN_DIR 26
-    #define PIN_PEN_RES 13
+    #define PIN_PEN_RES 13 // D1 mini = 10 // ESP32 38p = 13
     // Servo:
     #define PIN_SERVO 22
     #define SERVO_CHA 2
