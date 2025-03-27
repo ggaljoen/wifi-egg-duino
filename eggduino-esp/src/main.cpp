@@ -35,7 +35,7 @@ void startAp()
     char ssid[14];
     snprintf(ssid, sizeof(ssid), "EggBot-%04X", (uint16_t)(ESP.getEfuseMac() >> 32));
     Serial.println(WiFi.softAP(ssid) ? "Ready" : "Failed!");
-    WiFi.begin(wifi_network_ssid, wifi_network_password);
+//    WiFi.begin(wifi_network_ssid, wifi_network_password);
 }
 
 void OnWiFiEvent(WiFiEvent_t event)
@@ -90,7 +90,7 @@ void setup()
     #endif
 
     WiFi.onEvent(OnWiFiEvent);
-    WiFi.mode(WIFI_MODE_APSTA);
+    WiFi.mode(WIFI_MODE_AP); // WIFI_MODE_APSTA
     WiFi.setHostname("EggBot");
     if (WiFi.begin() != WL_CONNECTED)
     {

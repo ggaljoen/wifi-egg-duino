@@ -31,13 +31,16 @@ void Printer::begin()
     ESP_LOGV(TAG, "<- was called");
     disableMotors();
     ledcSetup(SERVO_CHA, 50, 16);
-    ledcAttachPin(PIN_SERVO, SERVO_CHA);
 
     preferences.begin("motion");
     getParameters(parameters);
     applyParameters();
     penCurrValue = penUpValue;
-    penUp();
+    ledcAttachPin(PIN_SERVO, SERVO_CHA);
+    ledcWrite(SERVO_CHA, 0);
+//    ledcWrite(SERVO_CHA, penUpValue);
+
+ //   penUp();
     disableMotors();
 }
 
@@ -143,7 +146,8 @@ void Printer::printTask()
         else if (buffer[0] == 'T')
         {
             long x = roundf((float)atof(&buffer[2]) / 360.0f * parameters.stepsPerRotation);
-            long y = roundf((float)atof(strchr(&buffer[2], ' ')) / 360.0f * parameters.stepsPerRotation);
+//            long y = roundf((float)atof(strchr(&buffer[2], ' ')) / 360.0f * parameters.stepsPerRotation);
+            long y = roundf((float)atof(strchr(&buffer[2], ' ')) / 180.0f * parameters.stepsPerRotation ); // y => pen only 1/2 steps
             moveTo(x, y);
         }
 
