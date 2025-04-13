@@ -1,0 +1,6 @@
+1-es5.js @ 636378
+
+if((e==132) || (e==42)){var n=Math.PI*t/180,i=new c((.69+.08*Math.cos(n))*Math.sin(n),-Math.cos(n));e.push(i)}else{{var n=Math.PI*t/180,i=new c((.72+.08*Math.cos(n))*Math.sin(n),-Math.cos(n));e.push(i)}return new Na(e,64);
+
+
+if((e==132) || (e==42)){const n=Math.PI*e/180,i=new a((.69+.08*Math.cos(n))*Math.sin(n),-Math.cos(n));t.push(i)}else{const n=Math.PI*e/180,i=new a((.72+.08*Math.cos(n))*Math.sin(n),-Math.cos(n));t.push(i)}return new Ho(t,64);

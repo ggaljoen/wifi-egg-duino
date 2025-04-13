@@ -147,7 +147,7 @@ void Printer::printTask()
         {
             long x = roundf((float)atof(&buffer[2]) / 360.0f * parameters.stepsPerRotation);
 //            long y = roundf((float)atof(strchr(&buffer[2], ' ')) / 360.0f * parameters.stepsPerRotation);
-            long y = roundf((float)atof(strchr(&buffer[2], ' ')) / 180.0f * parameters.stepsPerRotation ); // y => pen only 1/2 steps
+            long y = roundf((float)atof(strchr(&buffer[2], ' ')) / 270.0f * parameters.stepsPerRotation ); // y => pen only 3/4 steps
             moveTo(x, y);
         }
 
