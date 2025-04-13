@@ -244,12 +244,12 @@ void Printer::getParameters(MotionParameters &params)
     if (preferences.getBytes("eggbot", &params, size) != size)
     {
         ESP_LOGD(TAG, "Setting first run config defaults");
-        params.penDownPercent = 70;
-        params.penUpPercent = 40;
+        params.penDownPercent = 20;     // 70
+        params.penUpPercent = 0;        // 40
         params.drawingSpeed = 500;
         params.travelSpeed = 2000;
         params.penMoveDelay = 150;
-        params.stepsPerRotation = 6400;
+        params.stepsPerRotation = 3200; // 6400
         params.reversePen = false;
         params.reverseRotation = false;
         setParameters(params);
